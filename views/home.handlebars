@@ -1,0 +1,41 @@
+<h1>Welcome to Our Tech Blog!</h1>
+<p>Share and discover new insights from the tech world.</p>
+
+<h2>Latest Posts</h2>
+{{#if posts.length}}
+    <ul>
+        {{#each posts}}
+            <li>
+                <h3>{{this.title}}</h3>
+                <p>{{this.summary}}</p>
+                <a href="/post/{{this.id}}">Read More</a>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No posts to display.</p>
+{{/if}}
+
+
+<!-- A button to open the popup form -->
+<button class="open-button" onclick="openForm()">Add a New Post</button>
+
+<!-- The form -->
+<div class="form-popup" id="myForm">
+  <form action="/addpost" class="form-container" method="POST">
+    <h1>Add a New Post</h1>
+
+    <label for="title"><b>Title</b></label>
+    <input type="text" placeholder="Enter Title" name="title" required>
+
+    <label for="content"><b>Content</b></label>
+    <textarea placeholder="Start typing here..." name="content" required></textarea>
+
+    <button type="submit" class="btn">Add Post</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+
+
+<script src="/js/addpost"></script>
