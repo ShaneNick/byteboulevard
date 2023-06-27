@@ -1,27 +1,39 @@
-const express = require ('express');
-const app = express ();
-const port = process.env.PORT || 3001;
-const path = require('path')
+require('dotenv').config(); 
 
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static('public'));
-
-
+const express = require('express');
+const session = require('express-session');
 const exphbs = require('express-handlebars');
+const path = require('path');
+const routes = require('./controllers');
+const sequelize = require('./config/connection');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
+const app = express();
+const PORT = process.env.PORT || 3003;
 
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'handlebars')
+// Set up sessions with secret from environment variables
+const sess = {
+  secret: process.env.SESSION_SECRET,
+  cookie: {},
+  resave: false,
+  saveUninitialized: true,
+  store: new SequelizeStore({
+    db: sequelize
+  }),
+};
 
+app.use(session(sess));
 
-app.get('/', (req, res) => {
-    res.render('home');
-  });
-  
+// Inform Express.js on which template engine to use
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 
-app.listen(port,()=>{
-    console.log('Server is listening on' , port);
-})
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(routes);
+
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => console.log('Now listening'));
+});

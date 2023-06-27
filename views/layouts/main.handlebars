@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post</title>
+    <title>Tech Blog</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="logo">
-                <!-- Insert your logo here. -->
-                <img src="/images/BBlogo.svg" alt="Logo">
-            </div>
+    <header>
+        <h1>Tech Blog</h1>
+        {{#if logged_in}}
             <nav>
-                <ul>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/">Homepage</a></li>
-                    <li><a href="/addpost">Add a Post</a></li>
-                    <li><a href="/mypost">My Post</a></li>
-                </ul>
+                <a href="/">Home</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/logout">Log Out</a>
             </nav>
-        </div>
-        <div class="main-content">
-            <!-- The main content of the page will go here. -->
-            {{{body}}}
-        </div>
-    </div>
+        {{else}}
+            <nav>
+                <a href="/">Home</a>
+                <a href="/login">Log In</a>
+            </nav>
+        {{/if}}
+    </header>
+
+    <main>
+        {{{body}}}
+    </main>
+
+    <footer>
+        <p>© 2023 Tech Blog</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
 </body>
 </html>
-
-
