@@ -1,32 +1,9 @@
-const User = require('./user');
-const BlogPost = require('./blogPost');
-const Comment = require('./comment');
+const router = require('express').Router();
 
-User.hasMany(BlogPost, {
-    foreignKey: 'user_id',
-    onDelete: 'CASCADE'
-});
+const dashboardRoutes = require('./dashboardRoutes');  // Rename to match the file name
+const userRoutes = require('./userRoutes');  // Rename to match the file name
 
-BlogPost.belongsTo(User, {
-    foreignKey: 'user_id'
-});
+router.use('/dashboard', dashboardRoutes);
+router.use('/user', userRoutes);
 
-User.hasMany(Comment, {
-    foreignKey: 'user_id',
-    onDelete: 'CASCADE'
-});
-
-Comment.belongsTo(User, {
-    foreignKey: 'user_id'
-});
-
-BlogPost.hasMany(Comment, {
-    foreignKey: 'post_id',
-    onDelete: 'CASCADE'
-});
-
-Comment.belongsTo(BlogPost, {
-    foreignKey: 'post_id'
-});
-
-module.exports = { User, BlogPost, Comment };
+module.exports = router;

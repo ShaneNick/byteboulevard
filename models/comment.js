@@ -14,6 +14,9 @@ Comment.init(
         content: {
             type: DataTypes.TEXT,
             allowNull: false,
+            validate: {
+                notEmpty: true,  // Content cannot be empty
+            },
         },
         date_created: {
             type: DataTypes.DATE,
@@ -37,7 +40,7 @@ Comment.init(
     },
     {
         sequelize,
-        timestamps: false,
+        timestamps: true,  // Enable timestamps
         freezeTableName: true,
         underscored: true,
         modelName: 'comment',

@@ -1,11 +1,20 @@
-// UserController.js
-
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 
 const signup = async (req, res) => {
     try {
-        const userData = await User.create(req.body);
+        // Validate password
+        if (!req.body.password || req.body.password.length < 8) {
+            return res.status(400).json({ message: 'Password must be at least 8 characters' });
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const userData = await User.create({
+            ...req.body,
+            password: hashedPassword
+        });
 
         req.session.save(() => {
             req.session.user_id = userData.id;
@@ -14,7 +23,7 @@ const signup = async (req, res) => {
             res.status(200).json(userData);
         });
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({ message: 'An error occurred while creating the user', error: err });
     }
 };
 

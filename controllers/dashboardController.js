@@ -1,5 +1,3 @@
-// DashboardController.js
-
 const { User, BlogPost, Comment } = require('../models');
 
 const getDashboard = async (req, res) => {
@@ -86,6 +84,11 @@ const getEditPost = async (req, res) => {
 
 const addPost = async (req, res) => {
     try {
+        // Validate inputs
+        if (!req.body.title || !req.body.content) {
+            return res.status(400).json({ message: 'Title and content are required' });
+        }
+
         // Add new post
         const newPost = await BlogPost.create({
             title: req.body.title,
@@ -97,34 +100,45 @@ const addPost = async (req, res) => {
         res.redirect('/dashboard');
     } catch (err) {
         console.log(err);
-        res.status(500).json(err);
+        res.status(500).json({ message: 'An error occurred while creating the post', error: err });
     }
 };
 
 const updatePost = async (req, res) => {
     try {
+        // Validate inputs
+        if (!req.body.title || !req.body.content) {
+            return res.status(400).json({ message: 'Title and content are required' });
+        }
+
+        // Fetch the post to be updated
+        const blogPost = await BlogPost.findByPk(req.params.id);
+
+        if (!blogPost) {
+            return res.status(404).json({ message: 'No post found with this id' });
+        }
+
+        // Check if the user owns the post
+        if (blogPost.user_id !== req.session.user_id) {
+            return res.status(403).json({ message: 'You do not have permission to edit this post' });
+        }
+
         // Update the post
-        const updatedPost = await BlogPost.update({
+        await blogPost.update({
             title: req.body.title,
             content: req.body.content
-        }, {
-            where: {
-                id: req.params.id
-            }
         });
-
-        if (!updatedPost) {
-            res.status(404).json({ message: 'No post found with this id' });
-            return;
-        }
 
         // Redirect to dashboard
         res.redirect('/dashboard');
     } catch (err) {
         console.log(err);
-        res.status(500).json(err);
+        res.status(500).json({ message: 'An error occurred while updating the post', error: err });
     }
 };
+
+// ...
+
 
 const deletePost = async (req, res) => {
     try {
