@@ -1,18 +1,13 @@
-const express = require('express');
-const router = express.Router();
-const withAuth = require('../utils/auth');
-const { DashboardController } = require('../../controllers');
+const router = require('express').Router();
+const dashboardController = require('../../controllers/dashboardController');
 
-// Route for dashboard
-router.get('/', withAuth, DashboardController.getDashboard);
+router.route('/')
+  .get(dashboardController.getDashboard)
+  .post(dashboardController.addPost); 
 
-// Route for creating a new blog post
-router.post('/post', withAuth, DashboardController.addPost);
-
-// Route for updating an existing blog post
-router.put('/post/:id', withAuth, DashboardController.updatePost);
-
-// Route for deleting an existing blog post
-router.delete('/post/:id', withAuth, DashboardController.deletePost);
+router.route('/:id')
+  .get(dashboardController.getEditPost) 
+  .put(dashboardController.updatePost)
+  .delete(dashboardController.deletePost);
 
 module.exports = router;

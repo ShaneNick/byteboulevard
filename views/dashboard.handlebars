@@ -25,8 +25,11 @@
 
 <button class="open-button" onclick="openForm()">Add a New Post</button>
 
-<div class="form-popup" id="myForm">
-  <form action="/dashboard/addpost" class="form-container" method="POST">
+<!--The Form-->
+<!-- The form, initially hidden -->
+<div class="form-popup" id="myForm" style="display: none;">
+
+  <form action="/" class="form-container" method="POST">
     <h1>Add a New Post</h1>
 
     <label for="title"><b>Title</b></label>
@@ -40,4 +43,4 @@
   </form>
 </div>
 
-<script src="/js/dashboard.js"></script>
+

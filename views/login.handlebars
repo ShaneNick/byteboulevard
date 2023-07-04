@@ -1,13 +1,16 @@
 <h1>Log In</h1>
 
-<form action="/login" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
+<form id="login-form">
+    <label for="username-login">Username:</label>
+    <input type="text" id="username-login" name="username" required>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <label for="password-login">Password:</label>
+    <input type="password" id="password-login" name="password" required>
 
     <input type="submit" value="Log In">
 </form>
 
 <p>Don't have an account? <a href="/signup">Sign up</a>.</p>
+
+<!-- HTML for login form -->
+<script src="/js/login.js"></script>

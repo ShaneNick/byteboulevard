@@ -1,15 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const withAuth = require('../utils/auth');  // assuming you have an authentication middleware
-const { PostController, CommentController } = require('../../controllers');
+const postController = require('../../controllers/postController');
+
+router.route('/test')
+  .get((req, res) => {
+    res.send('Test route is working');
+});
 
 // Route for home page
-router.get('/', PostController.getPosts);
+router.route('/')
+  .get(postController.getPosts);
 
-// Route for individual blog post
-router.get('/post/:id', PostController.getPostById);
+// Route for individual blog posts
+router.route('/:id')
+  .get(postController.getPostById);
 
-// Route for submitting a comment on a blog post
-router.post('/post/:id/comment', withAuth, CommentController.addComment);
+// Route for login
+router.route('/login')
+  .get((req, res) => {
+    console.log("Login route hit");  // Console log to ensure this route is being accessed
+    res.render('login');
+});
+
+// Route for signup
+router.get('/signup', (req, res) => {
+    res.render('signup');
+});
 
 module.exports = router;

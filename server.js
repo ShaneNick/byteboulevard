@@ -4,7 +4,7 @@ const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const path = require('path');
-const routes = require('./controllers');
+const routes = require('./routes/api');  // Adjusted this line
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
@@ -25,15 +25,20 @@ const sess = {
 app.use(session(sess));
 
 // Inform Express.js on which template engine to use
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));  
 app.set('view engine', 'handlebars');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(routes);
+app.use(routes); 
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
 sequelize.sync({ force: false }).then(() => {
-  app.listen(PORT, () => console.log('Now listening'));
+  app.listen(PORT, () => console.log(`Now listening on ${PORT}`));
 });
+

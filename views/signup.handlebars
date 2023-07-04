@@ -1,13 +1,16 @@
 <h1>Sign Up</h1>
 
-<form action="/signup" method="POST">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
+<form id="signup-form">
+    <label for="username-signup">Username:</label>
+    <input type="text" id="username-signup" name="username" required>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <label for="password-signup">Password:</label>
+    <input type="password" id="password-signup" name="password" required>
 
     <input type="submit" value="Sign Up">
 </form>
 
 <p>Already have an account? <a href="/login">Log in</a>.</p>
+
+<!-- HTML for signup form -->
+<script src="/js/signup.js"></script>

@@ -19,7 +19,7 @@ BlogPost.init(
             type: DataTypes.TEXT,
             allowNull: false,
             validate: {
-                notEmpty: true,  // Content cannot be empty
+                notEmpty: true,  // Content  be empty
             },
         },
         date_created: {
