@@ -42,12 +42,13 @@ User.init(
             },
             beforeUpdate: async (updatedUserData) => {
                 try {
-                    updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
+                    if (updatedUserData.password) { // Add this check
+                        updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
+                    }
                     return updatedUserData;
                 } catch (err) {
                     console.log(err);
                     // Handle the error appropriatelyHere's the continuation of the `models/user.js`:
-
                 }
             },
         },

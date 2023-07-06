@@ -2,7 +2,10 @@ const { BlogPost } = require('../models');
 
 const createPost = async (req, res) => {
     try {
-        const newPost = await BlogPost.create(req.body);
+        const newPost = await BlogPost.create({ 
+            ...req.body, 
+            user_id: req.session.user_id, 
+        });
         res.status(201).json(newPost);
     } catch (err) {
         console.log(err); 
@@ -13,18 +16,23 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
     try {
-        const updatedPost = await BlogPost.update(req.body, {
-            where: { id: req.params.id }
+        const post = await BlogPost.findOne({ 
+            where: { 
+                id: req.params.id, 
+                user_id: req.session.user_id 
+            } 
         });
-        if (!updatedPost[0]) {
-            res.status(404).json({ message: 'Post not found' });
+        if (!post) {
+            res.status(404).json({ message: 'Post not found or you are not the owner.' });
         } else {
-            res.json(updatedPost);
+            post.update(req.body);
+            res.json(post);
         }
     } catch (err) {
         res.status(500).json(err);
     }
 };
+
 
 const deletePost = async (req, res) => {
     try {
@@ -45,12 +53,17 @@ const getPosts = async (req, res) => {
     try {
         const posts = await BlogPost.findAll();
         const postsData = posts.map((post) => post.get({ plain: true }));
-        res.render('home', { posts: postsData });
+        res.render('home', { 
+            posts: postsData, 
+            logged_in: req.session.logged_in  // Pass the logged_in status to the view
+        });
     } catch (err) {
         console.log("Error finding posts: " + err);
         res.status(500).json(err);
     }
 };
+
+
 
 const getPostById = async (req, res) => {
     try {
@@ -58,7 +71,7 @@ const getPostById = async (req, res) => {
         if (!post) {
             res.status(404).json({ message: 'Post not found' });
         } else {
-            res.json(post);
+            res.render('post', { post: post.get({ plain: true }) });  // Render the post.handlebars view with the post data
         }
     } catch (err) {
         res.status(500).json(err);

@@ -16,7 +16,7 @@
     <p>No posts to display.</p>
 {{/if}}
 
-
+{{#if logged_in}}
 <!-- A button to open the popup form -->
 <button class="open-button" onclick="openForm()">Add a New Post</button>
 
@@ -35,7 +35,7 @@
     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
   </form>
 </div>
-
-
-
-
+{{else}}
+<p>You must be logged in to create a new post. <a href="/login">Log in</a> or <a href="/signup">Sign up</a></p>
+{{/if}}
+<script src="/js/addpost.js"></script>

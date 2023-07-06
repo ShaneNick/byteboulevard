@@ -13,7 +13,7 @@ form.addEventListener('submit', function(event) {
   const formDataObj = Object.fromEntries(formData);
 
   // send a POST request to the server with the form data
-  fetch('/posts', {    // <--- Changed the route here
+  fetch('/api/posts', { // <- use /api/posts here
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',

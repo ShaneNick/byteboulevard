@@ -2,17 +2,14 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../../controllers/userControllers');
 
-// Route for user registration
 router.route('/signup')
-  .get((req, res) => res.render('signup')) // Add this line
+  .get((req, res) => res.render('signup'))
   .post(userController.signup);
 
-// Route for user login
-router.route('/login')
-  .get((req, res) => res.render('login')) // And this line
+router.route('/login') 
+  .get((req, res) => res.render('login'))
   .post(userController.login);
 
-// Route for user logout
 router.route('/logout')
   .post(userController.logout);
 

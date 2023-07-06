@@ -1,30 +1,38 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../../controllers/userControllers');
 const postController = require('../../controllers/postController');
 
+// Test route
 router.route('/test')
   .get((req, res) => {
     res.send('Test route is working');
 });
 
-// Route for home page
+// User routes
+router.route('/users/signup')
+  .get((req, res) => res.render('signup', { logged_in: req.session.logged_in }))
+  .post(userController.signup);
+
+router.route('/users/login') 
+  .get((req, res) => res.render('login', { logged_in: req.session.logged_in }))
+  .post(userController.login);
+
+
+router.route('/users/logout')
+  .post(userController.logout);
+
+// Home route
 router.route('/')
-  .get(postController.getPosts);
+  .get((req, res) => {
+    postController.getPosts(req, res, { logged_in: req.session.logged_in });
+  });
 
 // Route for individual blog posts
-router.route('/:id')
-  .get(postController.getPostById);
-
-// Route for login
-router.route('/login')
+router.route('/post/:id')
   .get((req, res) => {
-    console.log("Login route hit");  // Console log to ensure this route is being accessed
-    res.render('login');
-});
+    postController.getPostById(req, res, { logged_in: req.session.logged_in });
+  });
 
-// Route for signup
-router.get('/signup', (req, res) => {
-    res.render('signup');
-});
 
 module.exports = router;

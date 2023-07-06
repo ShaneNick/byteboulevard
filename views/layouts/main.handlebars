@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tech Blog</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
+
 <body>
     <header>
         <h1>Tech Blog</h1>
         {{#if logged_in}}
-            <nav>
-                <a href="/">Home</a>
-                <a href="/dashboard">Dashboard</a>
-                <a href="/logout">Log Out</a>
-            </nav>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <button id="logout-button">Logout</button>
+        </nav>
         {{else}}
-            <nav>
-                <a href="/">Home</a>
-                <a href="/login">Log In</a>
-            </nav>
+        <!-- in the not logged in section -->
+        <nav>
+            <a href="/">Home</a>
+            <a href="/login">Log In</a>
+            <a href="/signup">Sign Up</a>
+        </nav>
         {{/if}}
     </header>
 
@@ -31,8 +35,8 @@
         <p>© 2023 Tech Blog</p>
     </footer>
 
-    <script src="/js/addpost.js"></script>
     <script src="/js/main.js"></script>
-    
+
 </body>
+
 </html>
