@@ -71,7 +71,10 @@ const getPostById = async (req, res) => {
         if (!post) {
             res.status(404).json({ message: 'Post not found' });
         } else {
-            res.render('post', { post: post.get({ plain: true }) });  // Render the post.handlebars view with the post data
+            res.render('post', { 
+                post: post.get({ plain: true }),
+                logged_in: req.session.logged_in  // Pass the logged_in status to the view
+            });
         }
     } catch (err) {
         res.status(500).json(err);

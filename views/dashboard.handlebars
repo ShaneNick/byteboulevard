@@ -9,16 +9,16 @@
 
 <h2>Your Posts</h2>
 {{#if posts.length}}
-    <ul>
-        {{#each posts}}
-            <li>
-                <h3>{{this.title}}</h3>
-                <p>Posted on {{format_date this.date_created}}</p>
-                <a href="/dashboard/edit/{{this.id}}">Edit</a>
-                <a href="/dashboard/delete/{{this.id}}">Delete</a>
-            </li>
-        {{/each}}
-    </ul>
+    <ul id="posts-container">
+  {{#each posts}}
+      <li>
+          <h3>{{this.title}}</h3>
+          <p>Posted on {{format_date this.date_created}}</p>
+          <a href="/dashboard/edit/{{this.id}}">Edit</a>
+          <a href="/dashboard/delete/{{this.id}}">Delete</a>
+      </li>
+  {{/each}}
+</ul>
 {{else}}
     <p>You have not created any posts yet.</p>
 {{/if}}
@@ -43,5 +43,7 @@
 </div>
 
 <script src="/js/addpost.js"></script>
+<script src="/js/comment.js"></script>
+
 
 

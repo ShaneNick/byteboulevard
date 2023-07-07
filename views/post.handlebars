@@ -1,3 +1,29 @@
 <!-- views/post.handlebars -->
 <h1>{{post.title}}</h1>
 <p>{{post.body}}</p>
+
+<h2>Comments</h2>
+{{#if post.comments.length}}
+    <ul>
+        {{#each post.comments}}
+            <li>
+                <p>{{this.content}} - {{this.user.username}} ({{format_date this.date_created}})</p>
+            </li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No comments yet.</p>
+{{/if}}
+
+{{#if logged_in}}
+    <form id="comment-form">
+        <input type="hidden" id="post-id" value="{{post.id}}">
+        <label for="content">New Comment:</label>
+        <textarea id="content" required></textarea>
+        <button type="submit">Submit Comment</button>
+    </form>
+{{else}}
+    <p>User is not logged in</p>
+{{/if}}
+
+<script src="/js/comment.js"></script>

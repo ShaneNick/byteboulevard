@@ -1,13 +1,13 @@
-require('dotenv').config(); 
+require('dotenv').config();
 
 const express = require('express');
 const session = require('express-session');
 const exphbs = require('express-handlebars');
 const path = require('path');
-const apiRoutes = require('./routes/api');  // Adjusted this line
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const homeRoutes = require('./routes/api/homeRoutes');
+const routes = require('./routes');
+
 const app = express();
 const PORT = process.env.PORT || 3003;
 
@@ -18,22 +18,21 @@ const sess = {
   resave: false,
   saveUninitialized: true,
   store: new SequelizeStore({
-    db: sequelize
+    db: sequelize,
   }),
 };
 
 app.use(session(sess));
 
 // Inform Express.js on which template engine to use
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));  
+app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', apiRoutes);
-app.use(homeRoutes);
+app.use(routes); // Mount all routes from the routes/index.js file
 
 sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => console.log(`Now listening on ${PORT}`));

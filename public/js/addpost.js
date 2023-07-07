@@ -13,13 +13,17 @@ form.addEventListener('submit', function(event) {
   const formDataObj = Object.fromEntries(formData);
 
   // send a POST request to the server with the form data
-  fetch('/api/posts', { // <- use /api/posts here
+
+ console.log(formDataObj);  // Add this line
+fetch('/api/posts', { 
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
     },
     body: JSON.stringify(formDataObj),
+    credentials: 'same-origin', // Include cookies in the request
   })
+  
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -33,6 +37,8 @@ form.addEventListener('submit', function(event) {
       // you might want to update the posts list here
     })
     .catch((error) => {
-      console.error('Error:', error);
-    });
+      console.error('Error:', error.message);  // Change this line
+  });
+  
+  
 });

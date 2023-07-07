@@ -3,6 +3,15 @@ const router = express.Router();
 const userController = require('../../controllers/userControllers');
 const postController = require('../../controllers/postController');
 
+// Middleware for checking if user is logged in
+const withAuth = (req, res, next) => {
+  if (!req.session.logged_in) {
+    res.status(401).json({ message: 'Unauthorized' });
+    return;
+  }
+  next();
+};
+
 // Test route
 router.route('/test')
   .get((req, res) => {
@@ -20,7 +29,7 @@ router.route('/users/login')
 
 
 router.route('/users/logout')
-  .post(userController.logout);
+  .post(withAuth, userController.logout);
 
 // Home route
 router.route('/')
@@ -34,5 +43,14 @@ router.route('/post/:id')
     postController.getPostById(req, res, { logged_in: req.session.logged_in });
   });
 
+// Assuming you have routes for creating, updating, and deleting posts
+// You can apply the withAuth middleware to these routes
+
+router.route('/post')
+  .post(withAuth, postController.createPost);
+
+router.route('/post/:id')
+  .put(withAuth, postController.updatePost)
+  .delete(withAuth, postController.deletePost);
 
 module.exports = router;
