@@ -20,10 +20,5 @@ If a user is idle on the site for a certain period, they are prompted to log in 
 Deployment
 The application is deployed on Heroku and can be accessed here.
 
-Screenshots
-Homepage
-
-
-Dashboard
 
 
