@@ -1,11 +1,28 @@
- <h1>Your Dashboard</h1>
+<h1>Your Dashboard</h1>
 <p>Welcome, {{username}}!</p>
 
 <nav>
   <a href="/">Home</a>
-  <a href="/dashboard">Dashboard</a>
   <a href="/logout">Log Out</a>
 </nav>
+
+<button class="open-button" onclick="openForm()">Add a New Post</button>
+
+<!-- The form, initially hidden -->
+<div class="form-popup" id="myForm" >
+  <form action="/" class="form-container" method="POST">
+    <h1>Add a New Post</h1>
+
+    <label for="title"><b>Title</b></label>
+    <input type="text" placeholder="Enter Title" name="title" required>
+
+    <label for="content"><b>Content</b></label>
+    <textarea placeholder="Start typing here..." name="content" required></textarea>
+
+    <button type="submit" class="btn">Add Post</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
 
 <h2>Your Posts</h2>
 {{#if posts.length}}
@@ -23,27 +40,4 @@
     <p>You have not created any posts yet.</p>
 {{/if}}
 
-<button class="open-button" onclick="openForm()">Add a New Post</button>
-
-<!-- The form, initially hidden -->
-<div class="form-popup" id="myForm" style="display: none;">
-
-  <form action="/" class="form-container" method="POST">
-    <h1>Add a New Post</h1>
-
-    <label for="title"><b>Title</b></label>
-    <input type="text" placeholder="Enter Title" name="title" required>
-
-    <label for="content"><b>Content</b></label>
-    <textarea placeholder="Start typing here..." name="content" required></textarea>
-
-    <button type="submit" class="btn">Add Post</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
-
 <script src="/js/addpost.js"></script>
-
-
-
-

@@ -1,27 +1,24 @@
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 
-// Function to hash password
-const hashPassword = async (password) => {
-  return await bcrypt.hash(password, 10);
-};
-
-// Function to validate password
-const isValidPassword = async (enteredPassword, storedPassword) => {
-  return await bcrypt.compare(enteredPassword, storedPassword);
-};
-
 const signup = async (req, res) => {
   try {
-    console.log(req.body);
+    const { username, password } = req.body;
 
-    if (!req.body.password || req.body.password.length < 8) {
+    if (!password || password.length < 8) {
       return res
         .status(400)
         .json({ message: 'Password must be at least 8 characters' });
     }
 
-    const userData = await User.create(req.body);
+    const existingUser = await User.findOne({ where: { username } });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const userData = await User.create({ username, password: hashedPassword });
 
     req.session.save(() => {
       req.session.user_id = userData.id;
@@ -31,48 +28,38 @@ const signup = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(400).json(err);
+    res.status(500).json(err);
   }
 };
 
-
 const login = async (req, res) => {
   try {
-    console.log('Request body:', req.body); 
+    const { username, password } = req.body;
 
-    const userData = await User.findOne({ where: { username: req.body.username } });
-
-    console.log('User data:', userData); 
+    const userData = await User.findOne({ where: { username } });
 
     if (!userData) {
-      res
+      return res
         .status(400)
         .json({ message: 'Incorrect credentials, please try again' });
-      return;
     }
 
-    const validPassword = await isValidPassword(
-      req.body.password,
-      userData.password
-    );
-
-    console.log('Valid password:', validPassword); 
+    const validPassword = await bcrypt.compare(password, userData.password);
 
     if (!validPassword) {
-      res
+      return res
         .status(400)
         .json({ message: 'Incorrect username or password, please try again' });
-      return;
     }
 
     req.session.save(() => {
       req.session.user_id = userData.id;
       req.session.logged_in = true;
 
-      res.status(200).end();
+      res.status(200).json({ message: 'Logged in successfully' });
     });
   } catch (err) {
-    console.log('Error:', err); 
+    console.log(err);
     res.status(500).json(err);
   }
 };

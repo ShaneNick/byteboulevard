@@ -1,31 +1,35 @@
-<!-- views/post.handlebars -->
-<h1>{{post.title}}</h1>
-<p>{{post.content}}</p>
+<div class="post-container">
+  <h1 class="post-title">{{post.title}}</h1>
+  <div class="post-content">
+    <p>{{post.content}}</p>
+  </div>
 
-<h2>Comments</h2>
-<ul id="comments-list">
-  {{#if post.comments.length}}
-    {{#each post.comments}}
-      <li>
-        <p>{{this.content}} - {{this.user.username}} ({{format_date this.date_created}})</p>
-      </li>
-    {{/each}}
-  {{else}}
-    <p>No comments yet.</p>
-  {{/if}}
-</ul>
+  <div class="comments-section">
+    <h2>Comments</h2>
+    <ul id="comments-list">
+      {{#if post.comments.length}}
+        {{#each post.comments}}
+          <li class="comment-item">
+            <p><span class="comment-content">{{this.content}}</span> - <span class="comment-author">{{this.user.username}}</span> (<span class="comment-date">{{format_date this.date_created}}</span>)</p>
+          </li>
+        {{/each}}
+      {{else}}
+        <p class="no-comments">No comments yet.</p>
+      {{/if}}
+    </ul>
 
-
-{{#if logged_in}}
-    <form id="comment-form">
-        <input type="hidden" id="post-id" value="{{post.id}}">
-        <label for="content">New Comment:</label>
-        <textarea id="content" required></textarea>
-        <button type="submit">Submit Comment</button>
-    </form>
-{{else}}
-    <p>User is not logged in</p>
-{{/if}}
+    {{#if logged_in}}
+        <form id="comment-form" class="comment-form">
+            <input type="hidden" id="post-id" value="{{post.id}}">
+            <label for="content" class="comment-label">New Comment:</label>
+            <textarea id="content" class="comment-input" required></textarea>
+            <button type="submit" class="comment-submit">Submit Comment</button>
+        </form>
+    {{else}}
+        <p class="not-logged-in">You gotta log in to leave a comment, silly!</p>
+    {{/if}}
+  </div>
+</div>
 
 <script src="/js/comment.js"></script>
 

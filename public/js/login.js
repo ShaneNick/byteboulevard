@@ -15,11 +15,13 @@ const loginFormHandler = async (event) => {
         });
         
         if (response.ok) {
-            console.log(await response.json());  
             document.location.replace('/');
-        }
-         else {
-            alert(response.statusText);
+        } else {
+            const errorData = await response.json();
+            const errorMessage = errorData.message;
+            // Display errorMessage on the page
+            const errorElement = document.querySelector('#error-message');
+            errorElement.textContent = errorMessage;
         }
     }
 };

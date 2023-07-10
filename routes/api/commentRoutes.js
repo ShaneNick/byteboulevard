@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Comment } = require('../../models');
+const { BlogPost, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 
 router.post('/', withAuth, async (req, res) => {
@@ -8,12 +8,20 @@ router.post('/', withAuth, async (req, res) => {
             ...req.body,
             user_id: req.session.user_id,
         });
+        
+        // Fetch the post again, including its comments
+        const updatedPost = await BlogPost.findByPk(req.body.post_id, {
+            include: [
+              { model: Comment, include: User }
+            ]
+        });
 
-        res.status(200).json(newComment);
+        res.status(200).json(updatedPost);
     } catch (err) {
         res.status(400).json(err);
     }
 });
+
 
 router.get('/:id', async (req, res) => {
     try {

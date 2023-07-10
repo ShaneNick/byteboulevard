@@ -1,21 +1,6 @@
 <h1>Welcome to Our Tech Blog!</h1>
 <p>Share and discover new insights from the tech world.</p>
 
-<h2>Latest Posts</h2>
-{{#if posts.length}}
-   <ul id="posts-container">
-  {{#each posts}}
-      <li>
-          <h3>{{this.title}}</h3>
-          <p>{{this.summary}}</p>
-          <a href="/post/{{this.id}}">Read More</a>
-      </li>
-  {{/each}}
-</ul>
-{{else}}
-    <p>No posts to display.</p>
-{{/if}}
-
 {{#if logged_in}}
 <!-- A button to open the popup form -->
 <button class="open-button" onclick="openForm()">Add a New Post</button>
@@ -38,5 +23,21 @@
 {{else}}
 <p>You must be logged in to create a new post. <a href="/users/login">Log in</a> or <a href="/signup">Sign up</a></p>
 {{/if}}
+
+<h2>Latest Posts</h2>
+{{#if posts.length}}
+   <ul id="posts-container">
+  {{#each posts}}
+      <li>
+          <h3>{{this.title}}</h3>
+          <p>{{this.summary}}</p>
+          <a href="/post/{{this.id}}">Read More</a>
+      </li>
+  {{/each}}
+</ul>
+{{else}}
+    <p>No posts to display.</p>
+{{/if}}
+
 <script src="/js/addpost.js"></script>
 <script src="/js/comment.js"></script>
