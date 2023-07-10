@@ -1,19 +1,20 @@
 <!-- views/post.handlebars -->
 <h1>{{post.title}}</h1>
-<p>{{post.body}}</p>
+<p>{{post.content}}</p>
 
 <h2>Comments</h2>
-{{#if post.comments.length}}
-    <ul>
-        {{#each post.comments}}
-            <li>
-                <p>{{this.content}} - {{this.user.username}} ({{format_date this.date_created}})</p>
-            </li>
-        {{/each}}
-    </ul>
-{{else}}
+<ul id="comments-list">
+  {{#if post.comments.length}}
+    {{#each post.comments}}
+      <li>
+        <p>{{this.content}} - {{this.user.username}} ({{format_date this.date_created}})</p>
+      </li>
+    {{/each}}
+  {{else}}
     <p>No comments yet.</p>
-{{/if}}
+  {{/if}}
+</ul>
+
 
 {{#if logged_in}}
     <form id="comment-form">
@@ -27,3 +28,7 @@
 {{/if}}
 
 <script src="/js/comment.js"></script>
+
+<script>
+    console.log({{post.comments}}); // Check the comments array
+</script>

@@ -12,6 +12,8 @@ commentform.addEventListener('submit', function(event) {
         post_id: document.getElementById('post-id').value,
     };
 
+    console.log('Form data:', formData); // Check the formData values
+
     // send a POST request to the server with the form data
     fetch('/api/comments', {
         method: 'POST',
@@ -31,9 +33,37 @@ commentform.addEventListener('submit', function(event) {
         console.log('Success:', data);
         // Clear the form
         document.getElementById('content').value = '';
-        location.reload();
+        // Fetch and update the post data
+        fetch(`/api/posts/${formData.post_id}`)
+            .then(response => response.json())
+            .then(postData => {
+                // Update the comments section
+                updateCommentsSection(postData.comments);
+            })
+            .catch(error => {
+                console.error('Error fetching post data:', error);
+            });
     })
     .catch((error) => {
         console.error('Error:', error);
     });
 });
+
+// Function to update the comments section in the HTML
+function updateCommentsSection(comments) {
+    const commentsList = document.getElementById('comments-list');
+    commentsList.innerHTML = ''; // Clear the current comments
+
+    if (comments.length > 0) {
+        const commentsHTML = comments.map(comment => {
+            return `
+                <li>
+                    <p>${comment.content} - ${comment.user.username} (${format_date(comment.date_created)})</p>
+                </li>
+            `;
+        }).join('');
+        commentsList.innerHTML = commentsHTML;
+    } else {
+        commentsList.innerHTML = '<p>No comments yet.</p>';
+    }
+}

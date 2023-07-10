@@ -43,9 +43,6 @@ router.route('/post/:id')
     postController.getPostById(req, res, { logged_in: req.session.logged_in });
   });
 
-// Assuming you have routes for creating, updating, and deleting posts
-// You can apply the withAuth middleware to these routes
-
 router.route('/post')
   .post(withAuth, postController.createPost);
 

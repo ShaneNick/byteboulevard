@@ -1,4 +1,4 @@
-const { BlogPost } = require('../models');
+const { BlogPost, Comment, User } = require('../models');
 
 const createPost = async (req, res) => {
     try {
@@ -67,19 +67,25 @@ const getPosts = async (req, res) => {
 
 const getPostById = async (req, res) => {
     try {
-        const post = await BlogPost.findByPk(req.params.id);
-        if (!post) {
-            res.status(404).json({ message: 'Post not found' });
-        } else {
-            res.render('post', { 
-                post: post.get({ plain: true }),
-                logged_in: req.session.logged_in  // Pass the logged_in status to the view
-            });
-        }
+      const post = await BlogPost.findByPk(req.params.id, {
+        include: [
+          { model: Comment, include: User }
+        ]
+      });
+      if (!post) {
+        res.status(404).json({ message: 'Post not found' });
+      } else {
+        res.render('post', { 
+          post: post.get({ plain: true }),
+          logged_in: req.session.logged_in  // Pass the logged_in status to the view
+        });
+      }
     } catch (err) {
-        res.status(500).json(err);
+      res.status(500).json(err);
     }
-};
+  };
+  
+  
 
 module.exports = {
     getPosts,
