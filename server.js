@@ -10,7 +10,7 @@ const routes = require('./routes');
 const helpers = require('./utils/helpers');
 
 const app = express();
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3001;
 
 // Set up sessions with secret from environment variables
 const sess = {
