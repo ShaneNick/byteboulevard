@@ -1,5 +1,3 @@
-console.log('main.js is working');
-
 function openForm() {
   document.getElementById("myForm").style.display = "block";
 }
@@ -21,5 +19,4 @@ document.querySelector('#logout-button').addEventListener('click', async () => {
   }
 });
 
-
-
+console.log('main.js is working');
